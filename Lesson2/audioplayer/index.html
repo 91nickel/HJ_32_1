@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Задача 3. Аудиоплеер | Домашнее задание к лекции 1.2</title>
+	<link rel="stylesheet" href="css/style.css">
+	<style>
+		.hidden {
+			display: none;
+		}
+
+		.active {
+			display: inline-block;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="mediaplayer">
+		<audio></audio>
+		<div class="discarea">
+			<div class="disc">
+			</div>
+			<div class="stylus">
+				<div class="pivot"></div>
+				<div class="arm"></div>
+				<div class="head"></div>
+			</div>
+		</div>
+		<div class="controls">
+			<span class="title" title="LA Chill Tour"></span>
+			<div class="buttons">
+				<button class="back">
+					<i class="fa fa-backward"></i>
+				</button>
+				<button class="playstate">
+					<i class="fa fa-play"></i>
+					<i class="fa fa-pause"></i>
+				</button>
+				<button class="stop">
+					<i class="fa fa-stop"></i>
+				</button>
+				<button class="next">
+					<i class="fa fa-forward"></i>
+				</button>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		var musicNow = 0;
+		var playStatus = false;
+
+		const music = ['LA Chill Tour', 'LA Fusion Jam', 'This is it band'];
+		setMusic();
+		//console.log(music.length);
+
+		document.getElementsByClassName('back')[0].onclick = back;
+		document.getElementsByClassName('playstate')[0].onclick = play;
+		document.getElementsByClassName('stop')[0].onclick = stop;
+		document.getElementsByClassName('next')[0].onclick = next;
+		console.log(document.getElementsByTagName('audio'));
+		const player = document.getElementsByTagName('audio')[0];
+
+		function setMusic(param) {
+			if (!param) {
+				musicNow === 0;
+			}
+			if (param === 'next') {
+				musicNow = (musicNow === music.length - 1) ? 0 : musicNow + 1;
+			}
+			if (param === 'back') {
+				musicNow = (musicNow === 0) ? music.length - 1 : musicNow - 1;
+			}
+			console.log(musicNow);
+			document.getElementsByClassName('title')[0].title = music[musicNow];
+			document.getElementsByTagName('audio')[0].src = 'mp3/' + music[musicNow] + '.mp3';
+		}
+
+		function back() {
+			setMusic('back');
+			play();
+			play();
+		}
+
+		function play() {
+			console.log(playStatus);
+			if (!playStatus) {
+				player.play();
+				playStatus = true;
+			} else {
+				player.pause();
+				playStatus = false;
+			}
+			if (playStatus) {
+				document.getElementsByClassName('fa-pause')[0].style = 'display: inline-block;'
+				document.getElementsByClassName('fa-play')[0].classList.add('hidden');
+			}
+			if (!playStatus) {
+				document.getElementsByClassName('fa-pause')[0].style = ''
+				document.getElementsByClassName('fa-play')[0].classList.remove('hidden');
+			}
+		}
+
+		function stop() {
+			player.pause();
+			player.currentTime = 0;
+			playStatus = false;
+			document.getElementsByClassName('fa-pause')[0].style = ''
+			document.getElementsByClassName('fa-play')[0].classList.remove('hidden');
+		}
+
+		function next() {
+			setMusic('next');
+			play();
+			play();
+		}
+	</script>
+
+</body>
+
+</html>
