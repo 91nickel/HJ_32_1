@@ -38,9 +38,16 @@
 	</ul>
 
 	<script>
+		var playNow;
 		const buttons = ['key-clap', 'key-hihat', 'key-kick', 'key-openhat', 'key-boom', 'key-ride'];
 		buttons.forEach((el) => {
 			document.getElementsByClassName(el)[0].onclick = () => {
+				if (playNow) {
+					let track = document.querySelector('.' + playNow + ' audio');
+					track.pause();
+					track.currentTime = 0;
+				}
+				playNow = el;
 				document.querySelector('.' + el + ' audio').play();
 			};
 		})

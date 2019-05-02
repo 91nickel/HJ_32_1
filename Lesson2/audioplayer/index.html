@@ -11,10 +11,6 @@
 		.hidden {
 			display: none;
 		}
-
-		.active {
-			display: inline-block;
-		}
 	</style>
 </head>
 
@@ -56,13 +52,12 @@
 
 		const music = ['LA Chill Tour', 'LA Fusion Jam', 'This is it band'];
 		setMusic();
-		//console.log(music.length);
 
 		document.getElementsByClassName('back')[0].onclick = back;
 		document.getElementsByClassName('playstate')[0].onclick = play;
 		document.getElementsByClassName('stop')[0].onclick = stop;
 		document.getElementsByClassName('next')[0].onclick = next;
-		console.log(document.getElementsByTagName('audio'));
+
 		const player = document.getElementsByTagName('audio')[0];
 
 		function setMusic(param) {
@@ -75,7 +70,6 @@
 			if (param === 'back') {
 				musicNow = (musicNow === 0) ? music.length - 1 : musicNow - 1;
 			}
-			console.log(musicNow);
 			document.getElementsByClassName('title')[0].title = music[musicNow];
 			document.getElementsByTagName('audio')[0].src = 'mp3/' + music[musicNow] + '.mp3';
 		}
@@ -87,7 +81,6 @@
 		}
 
 		function play() {
-			console.log(playStatus);
 			if (!playStatus) {
 				player.play();
 				playStatus = true;
@@ -95,22 +88,14 @@
 				player.pause();
 				playStatus = false;
 			}
-			if (playStatus) {
-				document.getElementsByClassName('fa-pause')[0].style = 'display: inline-block;'
-				document.getElementsByClassName('fa-play')[0].classList.add('hidden');
-			}
-			if (!playStatus) {
-				document.getElementsByClassName('fa-pause')[0].style = ''
-				document.getElementsByClassName('fa-play')[0].classList.remove('hidden');
-			}
+			document.getElementsByClassName('mediaplayer')[0].classList.toggle('play');
 		}
 
 		function stop() {
 			player.pause();
 			player.currentTime = 0;
+			document.getElementsByClassName('mediaplayer')[0].classList.remove('play');
 			playStatus = false;
-			document.getElementsByClassName('fa-pause')[0].style = ''
-			document.getElementsByClassName('fa-play')[0].classList.remove('hidden');
 		}
 
 		function next() {
