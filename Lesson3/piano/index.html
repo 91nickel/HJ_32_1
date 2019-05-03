@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Задача 1. Пианино | Домашнее задание к лекции 2.1</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+  <ul class="set middle">
+    <li class="white">
+      <audio src=""></audio>
+    </li>
+    <li class="black">
+      <audio src=""></audio>
+    </li>
+    <li class="white">
+      <audio src=""></audio>
+    </li>
+    <li class="black">
+      <audio src=""></audio>
+    </li>
+    <li class="white">
+      <audio src=""></audio>
+    </li>
+  </ul>
+  <script>
+    var music = ['first', 'second', 'third', 'fourth', 'fifth']
+    var tones = ['middle', 'lower', 'higher']
+    var toneNow = tones[0];
+    const audioCollection = document.getElementsByTagName('audio');
+
+    var buttons = document.getElementsByTagName('li');
+    console.log(buttons);
+
+    for (let i = 0; i < buttons.length; i++) {
+      buttons[i].addEventListener('click', function () {
+        if (arguments[0].altKey) {
+          selectTone('higher');
+        }
+        if (arguments[0].shiftKey) {
+          selectTone('lower');
+        }
+        if (arguments[0].shiftKey && arguments[0].altKey || !arguments[0].shiftKey && !arguments[0].altKey) {
+          selectTone('middle');
+        }
+        console.log(arguments[0]);
+        audioCollection[i].src = 'sounds/' + toneNow + '/' + music[i] + '.mp3';
+        audioCollection[i].play();
+      })
+
+      function selectTone(param) {
+        switch (param) {
+          case tones[0]:
+          toneNow = tones[0];
+          break;
+          case tones[2]:
+          toneNow = tones[2];
+          break;
+          case tones[1]:
+          toneNow = tones[1];
+          break;
+        }
+      }
+
+      var element = document.getElementsByClassName('set')[0];
+      document.addEventListener('keydown', (event) => {
+        console.log('Есть нажатие');
+        if (event.key === 'Shift') {
+          element.classList.add('lower');
+          element.classList.remove('middle');
+          element.classList.remove('higher');
+          console.log('SHIFT зажата');
+        }
+        if (event.key === 'Alt') {
+          event.preventDefault();
+          element.classList.add('higher');
+          element.classList.remove('middle');
+          element.classList.remove('lower');
+          console.log('ALT зажата');
+        }
+      })      
+      document.addEventListener('keyup', (event) => {
+        if (event.key === 'Shift' || event.key === 'Alt') {
+          element.classList.add('middle');
+          element.classList.remove('higher');
+          element.classList.remove('lower');
+          console.log('ALT или SHIFT отпущена');
+        }
+      })
+    };
+  </script>
+</body>
+
+</html>
