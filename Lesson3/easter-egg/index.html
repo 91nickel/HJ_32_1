@@ -60,9 +60,11 @@
       if (arguments[0].code === netology[counter]) {
         easterEgg.push(arguments[0].code);
         counter++;
-      } else {
+        console.log(`Пасхалка ${easterEgg}`);
+      } else if(arguments[0].key !== 'Alt' && arguments[0].key !== 'Control' && arguments[0].key !== 'Shift') {
         counter = 0;
         easterEgg = [];
+        console.log('Сброс пасхалки');
       }
       if (easterEgg.length === netology.length) {
         console.log('Вы открыли пасхалку');
