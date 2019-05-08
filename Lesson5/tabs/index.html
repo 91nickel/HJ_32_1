@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+  <title>Задача 2. Табы | Домашнее задание к лекции 2.3</title>
+
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+  <div class="tabs">
+    <nav>
+      <a href="components/email-tab.html" class="active">Email</a>
+      <a href="components/sms-tab.html">SMS</a>
+    </nav>
+
+    <div id="content">
+
+    </div>
+    <div id="preloader" class="hidden">Загрузка...</div>
+  </div>
+  <script>
+    const firstRef = document.querySelector('nav a');
+    let content = document.getElementById('content');
+    const startRequest = new XMLHttpRequest();
+    startRequest.addEventListener('load', () => {
+      content.innerHTML = startRequest.responseText;
+    });
+    startRequest.open('GET', firstRef.href);
+    startRequest.send();
+
+    document.querySelectorAll('nav a').forEach((el) => {
+
+      el.addEventListener('click', (val) => {
+        val.preventDefault();
+
+        document.querySelectorAll('nav a').forEach((el1) => {
+          el1.classList.remove('active');
+        });
+        el.classList.add('active');
+
+        const request = new XMLHttpRequest();
+
+        request.addEventListener('load', () => {
+          document.getElementById('content').innerHTML = request.responseText;
+        })
+        request.addEventListener('loadstart', preloader)
+        request.addEventListener('loadend', preloader)
+
+        function preloader(){
+          document.getElementById('preloader').classList.toggle('hidden');
+        }
+
+        request.open('GET', el.href);
+        request.send();
+
+      })
+    });
+  </script>
+</body>
+
+</html>
