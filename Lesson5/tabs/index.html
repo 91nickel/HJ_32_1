@@ -42,10 +42,6 @@
         request.addEventListener('loadstart', preloader)
         request.addEventListener('loadend', preloader)
 
-        function preloader() {
-          document.getElementById('preloader').classList.toggle('hidden');
-        }
-
         request.open('GET', el.href);
         request.send();
 
