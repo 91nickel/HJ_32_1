@@ -24,43 +24,46 @@
     <div id="preloader" class="hidden">Загрузка...</div>
   </div>
   <script>
-    const firstRef = document.querySelector('nav a');
     let content = document.getElementById('content');
-    const startRequest = new XMLHttpRequest();
-    startRequest.addEventListener('load', () => {
-      content.innerHTML = startRequest.responseText;
-    });
-    startRequest.open('GET', firstRef.href);
-    startRequest.send();
+    const contentArray = [];
+    getContent();
 
-    document.querySelectorAll('nav a').forEach((el) => {
-
-      el.addEventListener('click', (val) => {
-        val.preventDefault();
-
-        document.querySelectorAll('nav a').forEach((el1) => {
-          el1.classList.remove('active');
-        });
-        
-        el.classList.add('active');
+    function getContent() {
+      Array.from(document.querySelectorAll('nav a')).forEach((el, i) => {
 
         const request = new XMLHttpRequest();
-
         request.addEventListener('load', () => {
-          document.getElementById('content').innerHTML = request.responseText;
+          contentArray.push(request.responseText);
+          if (i === 0) {
+            content.innerHTML = contentArray[0];
+          };
         })
+
         request.addEventListener('loadstart', preloader)
         request.addEventListener('loadend', preloader)
 
-        function preloader(){
+        function preloader() {
           document.getElementById('preloader').classList.toggle('hidden');
         }
 
         request.open('GET', el.href);
         request.send();
 
-      })
-    });
+        el.addEventListener('click', (val) => {
+          val.preventDefault();
+          content.innerHTML = contentArray[i];
+          document.querySelectorAll('nav a').forEach((el1, i) => {
+            el1.classList.remove('active');
+          });
+
+          el.classList.add('active');
+        });
+
+        function preloader() {
+          document.getElementById('preloader').classList.toggle('hidden');
+        };
+      });
+    }
   </script>
 </body>
 
