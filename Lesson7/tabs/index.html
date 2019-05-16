@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,6 +10,7 @@
   <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="./css/main.css">
 </head>
+
 <body>
   <div id="tabs">
     <ul class="tabs-nav">
@@ -19,7 +21,9 @@
         <h3>Горячие предложения</h3>
         <span class="tagline">Ближайшие распродажи</span>
         <h4>Готовим зимний гардероб</h4>
-        <p>Согласно теории "вчувствования", разработанной Теодором Липпсом, художественное опосредование использует суггестивный этикет. Художественный ритуал, следовательно, имитирует комплекс априорной бисексуальности. Иными словами, бессознательное изящно диссонирует неизменный героический миф.</p>
+        <p>Согласно теории "вчувствования", разработанной Теодором Липпсом, художественное опосредование использует
+          суггестивный этикет. Художественный ритуал, следовательно, имитирует комплекс априорной бисексуальности. Иными
+          словами, бессознательное изящно диссонирует неизменный героический миф.</p>
         <!-- Image by Ian Muttoo [CC-BY-SA-2.0 (http://creativecommons.org/licenses/by-sa/2.0)], via Wikimedia Commons, http://commons.wikimedia.org/wiki/File%3AShoppers_on_Dundas%2C_near_Yonge.jpg -->
         <img alt="Шопинг" src="./i/shopping.png">
         <div class="readmore">
@@ -30,7 +34,11 @@
         <h3>Еда</h3>
         <span class="tagline">Местные заведения</span>
         <h4>Скоро открытие</h4>
-        <p>Добавлю, что метафора трансформирует горизонт ожидания, таким образом, второй комплекс движущих сил получил разработку в трудах А.Берталанфи и Ш.Бюлера. Игровое начало фактурно. Флобер, описывая нервный припадок Эммы Бовари, переживает его сам: миракль аккумулирует постмодернизм. Художественное опосредование монотонно начинает экзистенциализм, таким образом, сходные законы контрастирующего развития характерны и для процессов в психике.</p>
+        <p>Добавлю, что метафора трансформирует горизонт ожидания, таким образом, второй комплекс движущих сил получил
+          разработку в трудах А.Берталанфи и Ш.Бюлера. Игровое начало фактурно. Флобер, описывая нервный припадок Эммы
+          Бовари, переживает его сам: миракль аккумулирует постмодернизм. Художественное опосредование монотонно
+          начинает экзистенциализм, таким образом, сходные законы контрастирующего развития характерны и для процессов в
+          психике.</p>
         <!-- Image by Serge Melki from Indianapolis, USA [CC-BY-2.0 (http://creativecommons.org/licenses/by/2.0)], via Wikimedia Commons, http://commons.wikimedia.org/wiki/File%3AThe_restaurant_Inside_Marriott_(5531365092).jpg -->
         <img alt="Еда" src="./i/dining.png">
         <div class="readmore">
@@ -41,7 +49,10 @@
         <h3>Живая музыка</h3>
         <span class="tagline">Скрытые кристаллы</span>
         <h4>Вечеринки которые нельзя пропустить</h4>
-        <p>В работе "Парадокс об актере" Дидро обращал внимание на то, как гармония готично имитирует текст. Аполлоновское начало аккумулирует неизменный филогенез. Как было показано выше, идея (пафос) готично трансформирует символизм. Герменевтика использует фактографический горизонт ожидания. Добавлю, что фарс трансформирует бессознательный текст.</p>
+        <p>В работе "Парадокс об актере" Дидро обращал внимание на то, как гармония готично имитирует текст.
+          Аполлоновское начало аккумулирует неизменный филогенез. Как было показано выше, идея (пафос) готично
+          трансформирует символизм. Герменевтика использует фактографический горизонт ожидания. Добавлю, что фарс
+          трансформирует бессознательный текст.</p>
         <!-- Image by 松岡明芳 (松岡明芳) [GFDL (http://www.gnu.org/copyleft/fdl.html) or CC-BY-SA-3.0 (http://creativecommons.org/licenses/by-sa/3.0)], via Wikimedia Commons, http://commons.wikimedia.org/wiki/File%3AKaraoke-Harbin6303733.jpg -->
         <img alt="Клубы" src="./i/nightlife.png">
         <div class="readmore">
@@ -51,5 +62,69 @@
     </section>
   </div>
   <script src="./js/tabs.js"></script>
+
+  <script>
+    const nav = document.querySelector('.tabs-nav');
+    const articles = Array.from(document.querySelector('.tabs-content').children);
+    nav.innerHTML = '';
+
+    articles.forEach((el) => {
+      const li = document.createElement('li');
+      const a = document.createElement('a');
+      a.classList.add(el.dataset.tabIcon);
+      a.classList.add('fa');
+      a.innerText = el.dataset.tabTitle;
+      li.appendChild(a);
+      nav.appendChild(li);
+    })
+    nav.children[0].classList.add('ui-tabs-active');
+    articles.forEach((el, i) => {
+      if (i === 0) {
+        return;
+      }
+      el.classList.add('hidden');
+    })
+
+    const newNav = document.querySelectorAll('.tabs-nav li').forEach((el) => {
+      el.addEventListener('click', selectArticle);
+    });
+
+    function selectArticle() {
+      console.log(arguments[0].target.parentElement);
+      const target = arguments[0].target.parentElement;
+      const navElements = document.querySelectorAll('.tabs-nav li');
+      const articlePos = Array.from(navElements).findIndex((el) => {
+        return el === target;
+      });
+      clearNav(articlePos);
+      clearArticles(articlePos);
+    }
+
+    function clearNav(pos) {
+      const tabs = document.querySelectorAll('.tabs-nav li');
+      tabs.forEach((el) => {
+        el.classList.remove('ui-tabs-active');
+      });
+      console.log(tabs);
+      tabs[pos].classList.add('ui-tabs-active');
+    }
+
+    function clearArticles(pos) {
+      const art = document.querySelectorAll('.tabs-content > *');
+      art.forEach((el, i) => {
+        if (i === pos) {
+          el.classList.remove('hidden');
+        } else {
+          el.classList.add('hidden');
+        }
+      })
+      console.log(art);
+    }
+
+    //console.log(articles);
+    //console.log(nav);
+  </script>
+
 </body>
+
 </html>
