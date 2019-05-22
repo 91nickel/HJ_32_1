@@ -2,15 +2,64 @@
 let colors;
 let sizes;
 let cart;
-let sizeNow;
-let colorNow;
+let sum = 0;
 
 getCart();
 getColors();
 getSizes();
 
-setTimeout(remember, 2000);
-setTimeout(getParamsFromStorage, 2500);
+setTimeout(remember, 1000);
+setTimeout(getParamsFromStorage, 1500);
+
+function addToCart() {
+    const form = document.querySelector('#AddToCartForm');
+
+    form.addEventListener('click', setEvent);
+
+    function setEvent() {
+        const e = arguments[0];
+        if (e.target.id === 'AddToCart' || e.target.parentElement.id === 'AddToCart') {
+            e.preventDefault();
+            console.log('Отправка формы');
+            const formData = new FormData(form);
+            formData.append('productId', form.dataset.productId)
+
+            for (const [k, v] of formData) {
+                console.log(k + ': ' + v);
+            }
+
+            const xhr = new XMLHttpRequest()
+            xhr.addEventListener('load', (event) => {
+                getCart();
+                console.log(xhr.response);
+            });
+            xhr.open('POST', 'https://neto-api.herokuapp.com/cart');
+            xhr.send(formData);
+        }
+    }
+}
+
+function deleteFromCart() {
+    const button = document.querySelector('.couquick-cart-product-remove');
+    button.addEventListener('click', (e) => {
+        e.preventDefault();
+        console.log('Удаление товара');
+        const formData = new FormData();
+        formData.append('productId', e.target.dataset.id)
+
+        for (const [k, v] of formData) {
+            console.log(k + ': ' + v);
+        }
+
+        const xhr = new XMLHttpRequest()
+        xhr.addEventListener('load', (event) => {
+            getCart();
+            console.log(xhr.response);
+        });
+        xhr.open('POST', 'https://neto-api.herokuapp.com/cart/remove');
+        xhr.send(formData);
+    })
+}
 
 function getParamsFromStorage() {
     const colorInputs = document.querySelectorAll('#colorSwatch input');
@@ -194,13 +243,18 @@ function getSizes() {
 function getCart() {
     const xhr = new XMLHttpRequest();
     xhr.addEventListener('load', (e) => {
+
         cart = JSON.parse(xhr.response);
         console.log('Корзина');
         console.log(cart);
 
         const container = document.querySelector('#quick-cart');
+        const snipetCart = document.querySelector('#quick-cart');
+        container.innerHTML = '';
+        snipetCart.innerHTML = '';
         cart.forEach((el, i) => {
             const counter = i + 1;
+            sum = el.quantity * el.price;
 
             //<div class="quick-cart-product quick-cart-product-static" id="quick-cart-product-2721888517" style="opacity: 1;">
             const child = document.createElement('div');
@@ -266,11 +320,46 @@ function getCart() {
 
             container.appendChild(child);
         })
+        const a = document.createElement('a');
+        a.id = 'quick-cart-pay';
+        a.setAttribute('quickbeam', 'cart-pay');
+        a.classList.add('cart-ico');
+        if (cart.length > 0) {
+            a.classList.add('open');
+        }
+
+        const span = document.createElement('span');
+
+        const strong = document.createElement('strong');
+        strong.classList.add('quick-cart-text');
+        strong.innerHTML = 'Оформить заказ<br>';
+
+        const innerSpan = document.createElement('span');
+        innerSpan.id = 'quick-cart-price';
+        innerSpan.innerText = '$' + sum + '.00';
+
+        span.appendChild(strong);
+        span.appendChild(innerSpan);
+        a.appendChild(span);
+        snipetCart.appendChild(a);
+
+        addToCart();
+        deleteFromCart();
     });
 
     xhr.open('GET', 'https://neto-api.herokuapp.com/cart');
     xhr.send();
 }
+//Снипет корзины
+/*
+<a id="quick-cart-pay" quickbeam="cart-pay" class="cart-ico open">
+  <span>
+    <strong class="quick-cart-text">Оформить заказ<br></strong>
+    <span id="quick-cart-price">$800.00</span>
+  </span>
+</a>
+*/
+
 // Корзина
 /*
 <div class="quick-cart-product quick-cart-product-static" id="quick-cart-product-2721888517" style="opacity: 1;">
