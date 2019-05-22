@@ -2,17 +2,58 @@
 let colors;
 let sizes;
 let cart;
+let sizeNow;
+let colorNow;
 
 getCart();
 getColors();
 getSizes();
 
+setTimeout(remember, 2000);
+setTimeout(getParamsFromStorage, 2500);
+
+function getParamsFromStorage() {
+    const colorInputs = document.querySelectorAll('#colorSwatch input');
+    const sizeInputs = document.querySelectorAll('#sizeSwatch input');
+    colorInputs.forEach((el) => {
+        el.removeAttribute('checked');
+        if (el.id === localStorage.color) {
+            el.setAttribute('checked', true);
+        }
+    })
+    sizeInputs.forEach((el) => {
+        el.removeAttribute('checked');
+        if (el.id === localStorage.size) {
+            el.setAttribute('checked', true);
+        }
+    })
+
+}
+
+function remember() {
+    const addToCartForm = document.querySelector('#AddToCartForm');
+    addToCartForm.addEventListener('click', (e) => {
+        const target = e.target;
+        if (target.tagName === 'INPUT' && !target.disabled) {
+            console.log('Сделан выбор чего - то');
+            if (target.name === 'color') {
+                console.log('Выбор цвета');
+                localStorage.color = target.id;
+            }
+            if (target.name === 'size') {
+                console.log('Выбор размера');
+                localStorage.size = target.id;
+            }
+        }
+    })
+}
+
 function getColors() {
     const xhr = new XMLHttpRequest();
     xhr.addEventListener('load', (e) => {
         colors = JSON.parse(xhr.response);
-        //console.log('Цвета');
-        //console.log(colors);
+        console.log('Цвета');
+        console.log(colors);
         const container = document.querySelector('#colorSwatch');
         colors.forEach((el, i) => {
             const counter = i + 1;
@@ -42,6 +83,10 @@ function getColors() {
             input.name = 'color';
             input.id = 'swatch-' + counter + '-' + el.code;
             input.value = el.code;
+
+            if (!el.isAvailable) {
+                input.setAttribute('disabled', true);
+            }
 
             //console.log(input);
 
@@ -85,8 +130,8 @@ function getSizes() {
     const xhr = new XMLHttpRequest();
     xhr.addEventListener('load', (e) => {
         sizes = JSON.parse(xhr.response);
-        //console.log('Размеры');
-        //console.log(sizes);
+        console.log('Размеры');
+        console.log(sizes);
 
         const container = document.querySelector('#sizeSwatch');
         sizes.forEach((el, i) => {
@@ -164,20 +209,20 @@ function getCart() {
             child.id = 'quick-cart-product-' + el.productId;
             child.style = 'opacity: 1;'
 
-            console.log(child);
+            //console.log(child);
 
             //<div class="quick-cart-product-wrap"></div>
             const div = document.createElement('div');
             div.classList.add('quick-cart-product-wrap');
 
-            console.log(div);
+            //console.log(div);
 
             //<img src="https://neto-api.herokuapp.com/hj/3.3/cart/product_1024x1024.png" title="Tony Hunfinger T-Shirt New York">
             const img = document.createElement('img');
             img.src = el.pic;
             img.title = el.title;
 
-            console.log(img);
+            //console.log(img);
 
             //<span class="s1" style="background-color: #000; opacity: .5">$800.00</span>
             const innerSpan1 = document.createElement('span');
@@ -185,13 +230,13 @@ function getCart() {
             innerSpan1.style = 'background-color: #000; opacity: .5';
             innerSpan1.innerText = '$' + el.price + '.00';
 
-            console.log(innerSpan1);
+            //console.log(innerSpan1);
 
             //<span class="s2"></span>
             const innerSpan2 = document.createElement('span');
             innerSpan2.classList.add('s2');
 
-            console.log(innerSpan2);
+            //console.log(innerSpan2);
 
             //<span class="count hide fadeUp" id="quick-cart-product-count-2721888517">1</span>
             const span1 = document.createElement('span');
@@ -201,7 +246,7 @@ function getCart() {
             span1.id = 'quick-cart-product-count-' + el.productId;
             span1.innerText = el.quantity;
 
-            console.log(span1);
+            //console.log(span1);
 
             //<span class="quick-cart-product-remove remove" data-id="2721888517"></span>
             const span2 = document.createElement('span');
@@ -209,7 +254,7 @@ function getCart() {
             span2.classList.add('remove');
             span2.dataset.id = el.productId;
 
-            console.log(span2);
+            //console.log(span2);
 
             div.appendChild(img);
             div.appendChild(innerSpan1);
@@ -225,8 +270,6 @@ function getCart() {
 
     xhr.open('GET', 'https://neto-api.herokuapp.com/cart');
     xhr.send();
-
-
 }
 // Корзина
 /*
