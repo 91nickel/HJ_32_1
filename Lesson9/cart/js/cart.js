@@ -10,34 +10,29 @@ getSizes();
 
 setTimeout(remember, 1000);
 setTimeout(getParamsFromStorage, 1500);
-setTimeout(setAdd, 1500);
-
-function setAdd() {
-    const form = document.querySelector('#AddToCartForm');
-    form.addEventListener('click', addToCart);
-}
 
 function addToCart() {
-    const e = arguments[0];
     const form = document.querySelector('#AddToCartForm');
-    e.preventDefault();
-    if (e.target.id === 'AddToCart' || e.target.parentElement.id === 'AddToCart') {
-        console.log('Отправка формы');
-        const formData = new FormData(form);
-        formData.append('productId', form.dataset.productId)
+    form.addEventListener('click', (e) => {
+        //console.log(e.target.id);
+        if (e.target.id === 'AddToCart' || e.target.parentElement.id === 'AddToCart') {
+            console.log('Отправка формы');
+            const formData = new FormData(form);
+            formData.append('productId', form.dataset.productId)
 
-        for (const [k, v] of formData) {
-            console.log(k + ': ' + v);
+            for (const [k, v] of formData) {
+                console.log(k + ': ' + v);
+            }
+
+            const xhr = new XMLHttpRequest()
+            xhr.addEventListener('load', (event) => {
+                getCart();
+                console.log(xhr.response);
+            });
+            xhr.open('POST', 'https://neto-api.herokuapp.com/cart');
+            xhr.send(formData);
         }
-
-        const xhr = new XMLHttpRequest()
-        xhr.addEventListener('load', (event) => {
-            getCart();
-            console.log(xhr.response);
-        });
-        xhr.open('POST', 'https://neto-api.herokuapp.com/cart');
-        xhr.send(formData);
-    }
+    })
 }
 
 function deleteFromCart() {
@@ -344,6 +339,7 @@ function getCart() {
         a.appendChild(span);
         snipetCart.appendChild(a);
 
+        addToCart();
         deleteFromCart();
     });
 
