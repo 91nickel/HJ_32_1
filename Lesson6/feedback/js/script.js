@@ -35,13 +35,10 @@ function showOutput() {
     document.querySelector('.contentform').classList.toggle('hidden');
     document.querySelector('#output').classList.toggle('hidden');
 
-    document.getElementById('name').innerHTML = document.getElementsByName('name')[0].value;
-    document.getElementById('lastname').innerHTML = document.getElementsByName('lastname')[0].value;
-    document.getElementById('company').innerHTML = document.getElementsByName('company')[0].value;
-    document.getElementById('role').innerHTML = document.getElementsByName('role')[0].value;
-    document.getElementById('zip').innerHTML = document.getElementsByName('zip')[0].value;
-    document.getElementById('city').innerHTML = document.getElementsByName('city')[0].value;
-    document.getElementById('address').innerHTML = document.getElementsByName('address')[0].value;
+    const outputs = document.querySelectorAll('output');
+    outputs.forEach((el) => {
+        el.innerHTML = document.getElementsByName(el.id)[0].value;
+    })
     document.getElementById('message').innerHTML = document.getElementsByName('message')[0].value;
 }
 
