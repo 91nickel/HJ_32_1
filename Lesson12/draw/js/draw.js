@@ -80,6 +80,8 @@ function drawFunction() {
 
     ctx.beginPath();
     ctx.fillStyle = getColor(color);
+    ctx.lineJoin = 'round';
+    ctx.lineCap = 'round';
     ctx.arc(x, y, radius, 0, 2 * pi);
     ctx.fill();
     ctx.closePath();
