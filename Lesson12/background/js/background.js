@@ -21,14 +21,14 @@ class Cross {
         this.rSpeed = randomValue(0, 0.4) - 0.2;
     }
     get xNext() {
-        this.x = this.x + Math.sin((50 + this.x + (Date.now() / 10)) / 100) * 3;
+        this.x = this.x + (Math.sin((50 + this.x + (Date.now() / 10)) / 100) * 3);
         if (this.x > maxX || this.x < 0) {
             this.x = this.xStart;
         }
         return this.x;
     }
     get yNext() {
-        this.y = this.y + Math.sin((45 + this.y + (Date.now() / 10)) / 100) * 4;
+        this.y = this.y + (Math.sin((45 + this.y + (Date.now() / 10)) / 100) * 4);
         if (this.y > maxX || this.y < 0) {
             this.y = this.yStart;
         }
@@ -82,4 +82,4 @@ function clearCanvas() {
     ctx.closePath();
 }
 
-setInterval(updateCrosses, 10);
+setInterval(updateCrosses, 20);
