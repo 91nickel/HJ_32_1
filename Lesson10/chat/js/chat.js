@@ -26,7 +26,7 @@ connection.addEventListener('open', event => {
     e.preventDefault();
     const message = form.children[0].value;
     console.log('Отправка сообщения', message);
-    element = messageTo.cloneNode(true);
+    const element = messageTo.cloneNode(true);
     element.children[0].innerText = message;
     element.children[1].innerText = getTime();
     messageContainer.appendChild(element);
